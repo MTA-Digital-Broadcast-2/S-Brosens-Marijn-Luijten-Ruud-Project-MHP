@@ -15,11 +15,12 @@ public class HelloTVXlet implements Xlet, UserEventListener, HActionListener {
     
     private XletContext actueleXletContext;
     private HScene scene;
-    //debuggen activeren of niet?
-    private boolean debug = true;
-    private HStaticText title, question, answerLable;
+    private HStaticText title, question, answerLable, scoreLable;
     private HTextButton knop1, knop2, knop3, knop4, knop5, knop6, knop7, knop8;
     private String isTrue = "";
+    //debuggen activeren of niet?
+    private boolean debug = true;
+    public int score = 0;
     
     public HelloTVXlet() {
         
@@ -61,6 +62,12 @@ public class HelloTVXlet implements Xlet, UserEventListener, HActionListener {
         answerLable.setBackground(new DVBColor(0,0,0, 150));
         answerLable.setBackgroundMode(HVisible.BACKGROUND_FILL);
         
+        scoreLable = new HStaticText(Integer.toString(score));
+        scoreLable.setLocation(0,40);
+        scoreLable.setSize(740,100);
+        //scoreLable.setBackground(new DVBColor(0,0,0, 100));
+        scoreLable.setBackgroundMode(HVisible.BACKGROUND_FILL);
+        
         scene.add(title);
         scene.add(question);
         
@@ -87,7 +94,7 @@ public class HelloTVXlet implements Xlet, UserEventListener, HActionListener {
         knop4.setSize(300,50);
         knop4.setBackground(new DVBColor(100,100,100, 179));
         knop4.setBackgroundMode(HVisible.BACKGROUND_FILL);
-        
+      
         knop5 = new HTextButton("Volkswagen");
         knop5.setLocation(220,180); //in pixels
         knop5.setSize(300,50);
@@ -113,28 +120,29 @@ public class HelloTVXlet implements Xlet, UserEventListener, HActionListener {
         knop8.setBackgroundMode(HVisible.BACKGROUND_FILL);
         
         //Interactiviteit implementeren
-        knop5.setFocusTraversal(knop8, knop6, null, null);//op, neer, links, rechts
-        knop6.setFocusTraversal(knop5, knop7, null, null);//op, neer, links, rechts
-        knop7.setFocusTraversal(knop6, knop8, null, null);//op, neer, links, rechts
-        knop8.setFocusTraversal(knop7, knop5, null, null);//op, neer, links, rechts
+        knop1.setFocusTraversal(knop4, knop2, null, null);//op, neer, links, rechts
+        knop2.setFocusTraversal(knop1, knop3, null, null);//op, neer, links, rechts
+        knop3.setFocusTraversal(knop2, knop4, null, null);//op, neer, links, rechts
+        knop4.setFocusTraversal(knop3, knop1, null, null);//op, neer, links, rechts
         
-        knop5.setActionCommand("5");
-        knop5.addHActionListener(this);
+        knop1.setActionCommand("1");
+        knop1.addHActionListener(this);
         
-        knop6.setActionCommand("6");
-        knop6.addHActionListener(this);
+        knop2.setActionCommand("2");
+        knop2.addHActionListener(this);
         
-        knop7.setActionCommand("7");
-        knop7.addHActionListener(this);
+        knop3.setActionCommand("3");
+        knop3.addHActionListener(this);
         
-        knop8.setActionCommand("8");
-        knop8.addHActionListener(this);
-        
+        knop4.setActionCommand("4");
+        knop4.addHActionListener(this);
+
         scene.add(knop1);
         scene.add(knop2);
         scene.add(knop3);
         scene.add(knop4);
         scene.add(answerLable);
+        scene.add(scoreLable);
         
         knop1.requestFocus();
         
@@ -182,6 +190,7 @@ public class HelloTVXlet implements Xlet, UserEventListener, HActionListener {
             isTrue = "Right";
             knop3.setBackground(new DVBColor(0,255,0, 179));
             knop3.setBackgroundMode(HVisible.BACKGROUND_FILL);
+            score+=100;
             
         }else if(command == "4"){
             
@@ -220,5 +229,6 @@ public class HelloTVXlet implements Xlet, UserEventListener, HActionListener {
         }
         
         this.answerLable.setTextContent(isTrue, this.answerLable.NORMAL_STATE);
+        this.scoreLable.setTextContent(Integer.toString(score), this.scoreLable.NORMAL_STATE);
     }
 }
